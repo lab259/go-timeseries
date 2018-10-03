@@ -24,10 +24,11 @@ var _ = Describe("Aggregation", func() {
 
 		It("should aggregate a field with default value", func() {
 			agg := timesrs.NewAggregationInc("field1")
-			data := make(timesrs.AggregationData)
-			Expect(agg.Aggregate(timesrs.NewEvent("name", nil, timesrs.DefaultClock.Time()), data)).To(BeNil())
+			data := make(timesrs.AggregationData, 0)
+			Expect(agg.Aggregate(timesrs.NewEvent("name", nil, timesrs.DefaultClock.Time()), &data)).To(BeNil())
 			Expect(data).To(HaveLen(1))
-			Expect(data).To(HaveKeyWithValue("field1", 1))
+			Expect(data[0].Field).To(Equal("field1"))
+			Expect(data[0].Value).To(Equal(1))
 		})
 	})
 })

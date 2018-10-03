@@ -21,7 +21,11 @@ func NewAggregationInc(field string, value ...int) *AggregationInc {
 }
 
 // Aggregate adds the `Field` with its `Value` to the `data`.
-func (agg *AggregationInc) Aggregate(event Event, data AggregationData) error {
-	data[agg.Field] = agg.Value
+func (agg *AggregationInc) Aggregate(event Event, data *AggregationData) error {
+	*data = append(*data, Operation{
+		Type:  OperationTypeInc,
+		Field: agg.Field,
+		Value: agg.Value,
+	})
 	return nil
 }

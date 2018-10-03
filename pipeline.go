@@ -71,9 +71,9 @@ type Pipeline struct {
 // pipeline.
 func (p *Pipeline) Run(e Event) (*PipelineResult, error) {
 	var pResult PipelineResult
-	aggrResult := make(AggregationData)
+	aggrResult := make(AggregationData, 0)
 	for _, aggr := range p.Aggregations {
-		err := aggr.Aggregate(e, aggrResult)
+		err := aggr.Aggregate(e, &aggrResult)
 		if err != nil {
 			if p.ErrorHandler == nil {
 				return nil, err

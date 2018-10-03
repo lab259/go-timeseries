@@ -27,7 +27,9 @@ var _ = Describe("Pipeline", func() {
 				Expect(entry.Event).To(Equal(evt))
 				Expect(entry.Keys).To(BeEmpty())
 				Expect(entry.Result.Data).To(HaveLen(1))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field1", 1))
+				Expect(entry.Result.Data[0].Field).To(Equal("field1"))
+				Expect(entry.Result.Data[0].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[0].Value).To(Equal(1))
 				return nil
 			}),
 			TagFnc: timesrs.NoTags,
@@ -55,8 +57,12 @@ var _ = Describe("Pipeline", func() {
 				Expect(entry.Event).To(Equal(evt))
 				Expect(entry.Keys).To(BeEmpty())
 				Expect(entry.Result.Data).To(HaveLen(2))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field1", 1))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field2", 2))
+				Expect(entry.Result.Data[0].Field).To(Equal("field1"))
+				Expect(entry.Result.Data[0].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[0].Value).To(Equal(1))
+				Expect(entry.Result.Data[1].Field).To(Equal("field2"))
+				Expect(entry.Result.Data[1].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[1].Value).To(Equal(2))
 
 				return nil
 			}),
@@ -85,8 +91,12 @@ var _ = Describe("Pipeline", func() {
 				Expect(entry.Event).To(Equal(evt))
 				Expect(entry.Keys).To(BeEmpty())
 				Expect(entry.Result.Data).To(HaveLen(2))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field1", 1))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field2", 2))
+				Expect(entry.Result.Data[0].Field).To(Equal("field1"))
+				Expect(entry.Result.Data[0].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[0].Value).To(Equal(1))
+				Expect(entry.Result.Data[1].Field).To(Equal("field2"))
+				Expect(entry.Result.Data[1].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[1].Value).To(Equal(2))
 
 				return nil
 			}),
@@ -102,7 +112,7 @@ var _ = Describe("Pipeline", func() {
 		pipeline := timesrs.Pipeline{
 			Collection: "aggregation1",
 			Aggregations: []timesrs.Aggregation{
-				timesrs.NewAggregationFnc(func(e timesrs.Event, data timesrs.AggregationData) error {
+				timesrs.NewAggregationFnc(func(e timesrs.Event, data *timesrs.AggregationData) error {
 					return errors.New("aggregation error")
 				}),
 			},
@@ -129,7 +139,7 @@ var _ = Describe("Pipeline", func() {
 		pipeline := timesrs.Pipeline{
 			Collection: "aggregation1",
 			Aggregations: []timesrs.Aggregation{
-				timesrs.NewAggregationFnc(func(e timesrs.Event, data timesrs.AggregationData) error {
+				timesrs.NewAggregationFnc(func(e timesrs.Event, data *timesrs.AggregationData) error {
 					return errors.New("aggregation error")
 				}),
 			},
@@ -162,7 +172,7 @@ var _ = Describe("Pipeline", func() {
 			Collection: "aggregation1",
 			Aggregations: []timesrs.Aggregation{
 				timesrs.NewAggregationInc("field1"),
-				timesrs.NewAggregationFnc(func(e timesrs.Event, data timesrs.AggregationData) error {
+				timesrs.NewAggregationFnc(func(e timesrs.Event, data *timesrs.AggregationData) error {
 					return errors.New("aggregation error")
 				}),
 				timesrs.NewAggregationInc("field3", 3),
@@ -175,8 +185,12 @@ var _ = Describe("Pipeline", func() {
 			},
 			Storage: NewStorageMock(func(entry *timesrs.StorageEntry) error {
 				Expect(entry.Result.Data).To(HaveLen(2))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field1", 1))
-				Expect(entry.Result.Data).To(HaveKeyWithValue("field3", 3))
+				Expect(entry.Result.Data[0].Field).To(Equal("field1"))
+				Expect(entry.Result.Data[0].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[0].Value).To(Equal(1))
+				Expect(entry.Result.Data[1].Field).To(Equal("field3"))
+				Expect(entry.Result.Data[1].Type).To(Equal(timesrs.OperationTypeInc))
+				Expect(entry.Result.Data[1].Value).To(Equal(3))
 				return nil
 			}),
 			ErrorHandler: func(aggregation timesrs.Aggregation, err error) error {

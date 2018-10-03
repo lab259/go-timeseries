@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestTimesrs(t *testing.T) {
+func TestTimeseries(t *testing.T) {
 	gomega.RegisterFailHandler(ginkgo.Fail)
 	macchiato.RunSpecs(t, "go-timeseries")
 }

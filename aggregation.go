@@ -1,8 +1,8 @@
 package timesrs
 
-type AggregationData map[string]interface{}
+type AggregationData []Operation
 
 // Aggregator produces an operation.
 type Aggregation interface {
-	Aggregate(event Event, data AggregationData) (error)
+	Aggregate(event Event, data *AggregationData) (error)
 }
