@@ -1,7 +1,8 @@
+[![CircleCI](https://circleci.com/gh/lab259/go-timeseries.svg?style=shield)](https://circleci.com/gh/lab259/go-timeseries)
+
 # go-timeseries
 
 ## Architecture
-
 
 **Pipeline** are a series of aggregations performed in sequence over an
 Event that generates a set of data that will be stored using a `Storage`
