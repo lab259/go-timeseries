@@ -14,11 +14,15 @@ test-watch:
 
 coverage-ci:
 	@mkdir -p $(COVERDIR)
-	@${GOPATHCMD} ginkgo -r -covermode=count --cover --trace ./
+	@ginkgo -r -covermode=count --cover --trace ./
 	@echo "mode: count" > "${COVERAGEFILE}"
 	@find . -type f -name *.coverprofile -exec grep -h -v "^mode:" {} >> "${COVERAGEFILE}" \; -exec rm -f {} \;
 
-coverage: coverage-ci
+coverage:
+	@mkdir -p $(COVERDIR)
+	@${GOPATHCMD} ginkgo -r -covermode=count --cover --trace ./
+	@echo "mode: count" > "${COVERAGEFILE}"
+	@find . -type f -name *.coverprofile -exec grep -h -v "^mode:" {} >> "${COVERAGEFILE}" \; -exec rm -f {} \;
 	@sed -i -e "s|_$(CURDIR)/|./|g" "${COVERAGEFILE}"
 
 coverage-html:
