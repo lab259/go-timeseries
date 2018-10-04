@@ -8,6 +8,8 @@ jobs:
     steps:
     - checkout
 
+    - run: env
+
     - run:
         name: Setup ginkgo
         command: go get -u github.com/onsi/ginkgo/ginkgo
@@ -18,9 +20,8 @@ jobs:
 
     - run:
         name: Run tests
-        command: |
-          make coverage-ci
+        command: make coverage-ci
 
     - run:
-        name:
+        name: Upload to Codecov
         command: bash <(curl -s https://codecov.io/bash)
