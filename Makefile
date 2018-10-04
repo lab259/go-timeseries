@@ -1,5 +1,5 @@
-GOPATH=$(CURDIR)/.gopath
-GOPATHCMD=GOPATH=$(GOPATH)
+GOPATHV=$(CURDIR)/.gopath
+GOPATHCMD=GOPATH=$(GOPATHV)
 
 COVERDIR=$(CURDIR)/.cover
 COVERAGEFILE=$(COVERDIR)/cover.out
@@ -25,7 +25,7 @@ coverage-html:
 	@$(GOPATHCMD) go tool cover -html="${COVERAGEFILE}" -o .cover/report.html
 
 deps:
-	@mkdir -p ${GOPATH}
+	@mkdir -p ${GOPATHV}
 	@$(GOPATHCMD) go get -v -t ./...
 
 deps-ci:
